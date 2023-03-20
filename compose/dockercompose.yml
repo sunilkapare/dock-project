@@ -1,0 +1,42 @@
+version: '3'
+services:
+
+  vprodb:
+    image: sunildevops/vprofiledb1:V1
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD="vprodbpass"
+    volumes:
+      - vprodbdata:/var/lib/mysql
+
+  vprocache01:
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  vpromq01:
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  vproapp:
+    image:  sunildevops/vprofileapp1:V1
+    ports:
+      - "8080:8080"
+    valumes:
+      - vproappdata:/usr/local/tomcat/webapps
+
+  vproweb:
+    image: sunildevops/vprofileweb1:V1
+    ports:
+      - "80:80"
+      
+
+
+  volumes:
+    vprodbdata: {}
+    vproappdata: {}
